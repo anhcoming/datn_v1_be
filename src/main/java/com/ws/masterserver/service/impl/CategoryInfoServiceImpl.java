@@ -25,7 +25,6 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
         return ResData.ok(repository.categoryRepository.noPage().stream().map(o -> CategoryDto.builder()
                 .id(o.getId())
                 .name(o.getName())
-                .slug(o.getSlug())
                 .productNumber(repository.productRepository.countByCategoryId(o.getId()))
                 .build()).collect(Collectors.toList()));
     }
@@ -35,6 +34,7 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
         return repository.categoryRepository.noPage().stream().map(o -> CategoryDto.builder()
                 .id(o.getId())
                 .name(o.getName())
+                .slug(o.getSlug())
                 .productNumber(repository.productRepository.countByCategoryId(o.getId()))
                 .build()).collect(Collectors.toList());
 
