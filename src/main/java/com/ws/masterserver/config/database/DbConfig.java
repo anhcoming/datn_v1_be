@@ -28,7 +28,7 @@ public class DbConfig {
 
         String username = "postgres";
         String password = "123456";
-        String url = "jdbc:postgresql://localhost:5432/datn_v7";
+        String url = "jdbc:postgresql://localhost:5432/datn_v1";
 
 
       String className = "org.postgresql.Driver";
