@@ -19,5 +19,5 @@ public class AddressReq {
     private String districtId;
     private String districtName;
     private String wardCode;
-    private String wardName;
+    private String wardName; 
 }
