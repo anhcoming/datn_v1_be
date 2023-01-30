@@ -15,6 +15,6 @@ public class CategoryValidator {
         ValidatorUtils.validNullOrEmpty(CategoryFields.DES, dto.getDes());
         ValidatorUtils.validLength(CategoryFields.DES, dto.getDes(), 500, true);
         ValidatorUtils.validNullOrEmpty(CategoryFields.TYPE_ID, dto.getTypeId());
-        ValidatorUtils.validNullOrEmptyStringList(CategoryFields.PRODUCT_LIST, dto.getProductIds());
+//        ValidatorUtils.validNullOrEmptyStringList(CategoryFields.PRODUCT_LIST, dto.getProductIds());
     }
 }
