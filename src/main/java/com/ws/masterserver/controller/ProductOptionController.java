@@ -21,14 +21,10 @@ public class ProductOptionController extends WsController {
     }
 
 
-//    @GetMapping("/findColor")
-//    public ResponseEntity<?> findColor(@RequestParam String sizeId,@RequestParam String productId){
-//        return ResponseEntity.status(HttpStatus.OK).body(service.productOptionService.findColorNameBySize(sizeId,productId));
-//    }
-@GetMapping("/findColor")
-public ResponseEntity<?> findColor(@RequestParam String productId){
-    return ResponseEntity.status(HttpStatus.OK).body(service.productOptionService.findColorNameBySize(productId));
-}
+    @GetMapping("/findColor")
+    public ResponseEntity<?> findColor(@RequestParam String sizeId,@RequestParam String productId){
+        return ResponseEntity.status(HttpStatus.OK).body(service.productOptionService.findColorNameBySize(sizeId,productId));
+    }
 
     @GetMapping("/findSize")
     public ResponseEntity<?> findSize(@RequestParam String productId){

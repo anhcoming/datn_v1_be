@@ -23,20 +23,13 @@ public interface ProductOptionRepository extends JpaRepository<ProductOptionEnti
     @Query(value = "SELECT * FROM product_option po WHERE po.size_id = ?1 AND po.color_id = ?2 AND po.product_id = ?3",nativeQuery = true)
     ProductOptionEntity findBySizeAndColorId(String sizeId, String color,String productId);
 
-//    @Query("select DISTINCT new com.ws.masterserver.dto.customer.product.ColorResponse(" +
-//        "c.id,\n" +
-//        "c.name)\n" +
-//        "from ProductOptionEntity po\n" +
-//        "JOIN ColorEntity c on po.colorId = c.id\n" +
-//        "where po.sizeId = :sizeId and po.productId = :productId")
-//    List<ColorResponse> getListColorNameBySize(@Param("sizeId") String sizeId, @Param("productId") String productId);
-@Query("select DISTINCT new com.ws.masterserver.dto.customer.product.ColorResponse(" +
+    @Query("select DISTINCT new com.ws.masterserver.dto.customer.product.ColorResponse(" +
         "c.id,\n" +
         "c.name)\n" +
         "from ProductOptionEntity po\n" +
         "JOIN ColorEntity c on po.colorId = c.id\n" +
-        "where po.productId = :productId")
-List<ColorResponse> getListColorNameBySize(@Param("productId") String productId);
+        "where po.sizeId = :sizeId and po.productId = :productId")
+    List<ColorResponse> getListColorNameBySize(@Param("sizeId") String sizeId, @Param("productId") String productId);
 
     @Query("SELECT distinct po.image\n" +
             "from ProductOptionEntity po\n" +
