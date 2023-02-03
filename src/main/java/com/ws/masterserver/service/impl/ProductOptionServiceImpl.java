@@ -49,8 +49,8 @@ public class ProductOptionServiceImpl implements ProductOptionService {
 //        return new ResData<>(color, WsCode.OK);
 //    }
 @Override
-public ResData<List<ColorResponse>> findColorNameBySize(String productId) {
-    List<ColorResponse> color = repository.productOptionRepository.getListColorNameBySize(productId);
+public ResData<List<ColorResponse>> findColorNameBySize(String productId,String sizeId) {
+    List<ColorResponse> color = repository.productOptionRepository.getListColorNameBySize(productId,sizeId);
     log.info("----------------" + color);
     return new ResData<>(color, WsCode.OK);
 }

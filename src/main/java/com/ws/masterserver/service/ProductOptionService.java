@@ -11,9 +11,7 @@ import java.util.List;
 
 public interface ProductOptionService {
     ResData<ProductOptionIdRes> findProductOptionId(ProductOptionIdReq req);
-//    ResData<List<ColorResponse>> findColorNameBySize(String sizeId,String productId);
-ResData<List<ColorResponse>> findColorNameBySize(String productId);
-
+    ResData<List<ColorResponse>> findColorNameBySize(String sizeId,String productId);
     ResData<List<SizeResponse>> findSizeByProductId(String productId);
 
     ResData<ColorResponse> findCoLorByHex(String hex);
