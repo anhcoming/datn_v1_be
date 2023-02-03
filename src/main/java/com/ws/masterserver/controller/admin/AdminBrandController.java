@@ -33,10 +33,10 @@ public class AdminBrandController extends WsController {
     }
 
     @PostMapping("/delete")
-    @Operation(summary = "API xóa chất liệu sp")
-    public ResponseEntity<ResData<String>> delete(@RequestBody BrandDto dto){
-        log.info("start api delele with dto: {}", JsonUtils.toJson(dto));
-        return ResponseEntity.status(HttpStatus.OK).body(service.brandService.delete(getCurrentUser(), dto));
+    @Operation(summary = "API xóa thương hiệu sp")
+    public ResponseEntity<ResData<String>> delete(String id){
+        log.info("start api delete with dto: {}", JsonUtils.toJson(id));
+        return ResponseEntity.status(HttpStatus.OK).body(service.brandService.delete(getCurrentUser(), id));
     }
 
     @PostMapping("/change-status")

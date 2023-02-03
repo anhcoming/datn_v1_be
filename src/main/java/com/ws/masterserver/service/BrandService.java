@@ -8,7 +8,7 @@ import com.ws.masterserver.utils.base.rest.ResData;
 public interface BrandService {
     ResData<String> create(CurrentUser currentUser, BrandDto dto);
 
-    ResData<String> delete(CurrentUser currentUser, BrandDto dto);
+    ResData<String> delete(CurrentUser currentUser, String id);
 
     ResData<String> update(CurrentUser currentUser, BrandDto dto);
 
