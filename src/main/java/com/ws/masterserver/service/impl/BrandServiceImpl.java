@@ -62,18 +62,18 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public ResData<String> delete(CurrentUser currentUser, BrandDto dto) {
+    @Transactional
+    public ResData<String> delete(CurrentUser currentUser, String id) {
         AuthValidator.checkAdmin(currentUser);
-        if (dto.getId() == null || Boolean.FALSE.equals(repository.colorRepository.findByIdAndActive(dto.getId(), Boolean.TRUE))) {
+        if (id == null || Boolean.FALSE.equals(repository.brandRepository.findByIdAndActive(id, Boolean.TRUE))) {
             throw new WsException(WsCode.BRAND_NOT_FOUND);
         }
-        BrandEntity brand = repository.brandRepository.findByIdAndActive(dto.getId(),Boolean.TRUE);
-        brand.setActive(Boolean.FALSE);
-        repository.brandRepository.save(brand);
+        BrandEntity brand = repository.brandRepository.findById(id)
+                .orElseThrow(() -> new WsException(WsCode.ERROR_NOT_FOUND));
+        repository.brandRepository.delete(brand);
         log.info("delete finished at {} with response: {}", new Date(), JsonUtils.toJson(brand));
         return new ResData<>(brand.getId(), WsCode.OK);
     }
-
     @Override
     public ResData<String> update(CurrentUser currentUser, BrandDto dto) {
         AuthValidator.checkAdminAndStaff(currentUser);
