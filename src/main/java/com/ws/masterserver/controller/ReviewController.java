@@ -58,4 +58,11 @@ public class ReviewController extends WsController {
         return ResponseEntity.ok(service.reviewService.checkExistProductReview(getCurrentUser(),id));
     }
 
+
+    @GetMapping("/checkReviewV2/{orderId}/{productId}")
+    public ResponseEntity<?> checkReviewV2(@PathVariable("orderId") String orderId,@PathVariable("productId") String productId){
+        log.info("----- API /api/v1/review/checkReview/id --------");
+        return ResponseEntity.ok(service.reviewService.checkExistProductReviewV2(orderId,productId));
+    }
+
 }
