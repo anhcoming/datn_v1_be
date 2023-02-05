@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -210,6 +211,20 @@ public class AdminDiscountDetailServiceImpl implements AdminDiscountDetailServic
             default:
                 return null;
         }
+    }
+
+    @Override
+    @Transactional
+    public ResData<String> changeStatus(CurrentUser currentUser, String id) {
+        AuthValidator.checkAdmin(currentUser);
+        if (id == null) {
+            throw new WsException(WsCode.DISCOUNT_NOT_FOUND);
+        }
+        DiscountEntity discount = repository.discountRepository.findById(id).orElse(null);
+        discount.setActive(!discount.getActive());
+        repository.discountRepository.save(discount);
+        log.info("delete finished at {} with response: {}", new Date(), JsonUtils.toJson(discount));
+        return new ResData<>(discount.getId(), WsCode.OK);
     }
 
     private String getUsageNumber(Long usageLimit, Long usedNumber) {

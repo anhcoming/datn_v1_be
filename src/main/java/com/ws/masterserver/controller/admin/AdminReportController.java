@@ -5,12 +5,17 @@ import com.ws.masterserver.dto.admin.report.discount.DiscountRevenueReq;
 import com.ws.masterserver.dto.admin.report.overview.ReportOverviewReq;
 import com.ws.masterserver.dto.admin.report.product.ProductRevenueReq;
 import com.ws.masterserver.utils.base.WsController;
-import com.ws.masterserver.utils.common.JsonUtils;
+
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/v1/admin/report")
@@ -84,5 +89,41 @@ public class AdminReportController extends WsController {
         return service.adminDiscountRevenueReportService.export(getCurrentUser(), payload);
     }
 
+    @PostMapping("/export/template")
+    public Object exportTemplate() throws IOException {
+        // Creating an object of File class and
+        // providing local directory path of a file
+        File path = new File(
+                "C:\\FPT_Polytechnic\\DATN_DA\\datn_v1_fe_client\\src\\assets\\img\\slider\\template_product.csv");
 
+        // Calling the Method1 in main() to
+        // convert file to byte array
+        byte[] array = method(path);
+
+        // Printing the byte array
+        System.out.print(Arrays.toString(array));
+        return array;
+    }
+
+    public static byte[] method(File file)
+            throws IOException {
+
+        // Creating an object of FileInputStream to
+        // read from a file
+        FileInputStream fl = new FileInputStream(file);
+
+        // Now creating byte array of same length as file
+        byte[] arr = new byte[(int) file.length()];
+
+        // Reading file content to byte array
+        // using standard read() method
+        fl.read(arr);
+
+        // lastly closing an instance of file input stream
+        // to avoid memory leakage
+        fl.close();
+
+        // Returning above byte array
+        return arr;
+    }
 }

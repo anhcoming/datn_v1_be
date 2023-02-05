@@ -123,4 +123,6 @@ public class DiscountEntity {
     @LastModifiedBy
     @Column(name = "updated_by")
     private String updatedBy;
+
+    private Boolean active;
 }
