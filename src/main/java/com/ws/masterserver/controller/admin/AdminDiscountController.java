@@ -3,10 +3,12 @@ package com.ws.masterserver.controller.admin;
 import com.ws.masterserver.dto.admin.discount.create.DiscountDto;
 import com.ws.masterserver.dto.admin.discount.search.DiscountRequest;
 import com.ws.masterserver.utils.base.WsController;
+import com.ws.masterserver.utils.base.rest.ResData;
 import com.ws.masterserver.utils.common.JsonUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,4 +45,10 @@ public class AdminDiscountController extends WsController {
         return ResponseEntity.ok(service.adminDiscountStatusService.delete(getCurrentUser(), id));
     }
 
+    @PostMapping("/change-status")
+    @Operation(summary = "API đổi trạng thái khuyến mãi")
+    public ResponseEntity<ResData<String>> changeStatus(String id){
+        log.info("start api delete with dto: {}", JsonUtils.toJson(id));
+        return ResponseEntity.status(HttpStatus.OK).body(service.adminDiscountDetailService.changeStatus(getCurrentUser(), id));
+    }
 }

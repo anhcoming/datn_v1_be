@@ -6,9 +6,12 @@ import com.ws.masterserver.entity.*;
 import com.ws.masterserver.job.DiscountNotificationJob;
 import com.ws.masterserver.service.AdminDiscountService;
 import com.ws.masterserver.service.MailService;
+import com.ws.masterserver.utils.base.WsException;
 import com.ws.masterserver.utils.base.WsRepository;
 import com.ws.masterserver.utils.base.rest.CurrentUser;
+import com.ws.masterserver.utils.base.rest.ResData;
 import com.ws.masterserver.utils.common.*;
+import com.ws.masterserver.utils.constants.WsCode;
 import com.ws.masterserver.utils.constants.enums.*;
 import com.ws.masterserver.utils.validator.auth.AuthValidator;
 import com.ws.masterserver.utils.validator.admin.discount.AdminDiscountValidator;
@@ -121,6 +124,7 @@ public class AdminDiscountServiceImpl implements AdminDiscountService {
         }
         discount.setStatus(status.name());
         discount.setDeleted(false);
+        discount.setActive(true);
         log.info("create() discount before save: {}", JsonUtils.toJson(discount));
         repository.discountRepository.save(discount);
         log.info("create() discount after save: {}", JsonUtils.toJson(discount));
@@ -267,5 +271,18 @@ public class AdminDiscountServiceImpl implements AdminDiscountService {
             default:
                 break;
         }
+    }
+    @Override
+    @Transactional
+    public ResData<String> changeStatus(CurrentUser currentUser, String id) {
+        AuthValidator.checkAdmin(currentUser);
+        if (id == null) {
+            throw new WsException(WsCode.DISCOUNT_NOT_FOUND);
+        }
+        DiscountEntity discount = repository.discountRepository.findById(id).orElse(null);
+        discount.setActive(!discount.getActive());
+        repository.discountRepository.save(discount);
+        log.info("delete finished at {} with response: {}", new Date(), JsonUtils.toJson(discount));
+        return new ResData<>(discount.getId(), WsCode.OK);
     }
 }
