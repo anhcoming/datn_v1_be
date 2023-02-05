@@ -78,7 +78,13 @@ public enum WsCode {
     ORDER_HAS_CANCELED_BY_CUSTOMER("500", "Khách hàng đã hủy đơn hàng"),
     SHIP_PRICE_UNSATISFACTORY("400", "Phí vận chuyển không thỏa mãn điều kiện"),
     DISCOUNT_HAS_NO_EFFECT_ON_YOUR_ORDER("400", "Mã khuyến mãi không có hiệu lực với đơn hàng của bạn"),
-    TYPE_NOT_FOUND("400", "Không tìm thấy loại sản phẩm");
+    TYPE_NOT_FOUND("400", "Không tìm thấy loại sản phẩm"),
+
+    DISCOUNT_PENDINGPENDING("400", "Chưa áp dụng"),
+
+    DISCOUNT_PENDINGACTIVE("400","Đang áp dụng"),
+
+    DISCOUNT_PENDINGDE_ACTIVE("400","Ngừng áp dụng");
 
     private final String code;
     private final String message;
