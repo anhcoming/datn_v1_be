@@ -95,6 +95,8 @@ public class AdminReportController extends WsController {
         // providing local directory path of a file
         File path = new File(
                 "C:\\FPT_Polytechnic\\DATN_DA\\datn_v1_fe_client\\src\\assets\\img\\slider\\template_product.csv");
+        //pull code mới về nhớ sửa lại đường dẫn file mặc định của template_product
+        //Vì đường dẫn của mỗi máy tính cá nhân là khác nhau
 
         // Calling the Method1 in main() to
         // convert file to byte array
