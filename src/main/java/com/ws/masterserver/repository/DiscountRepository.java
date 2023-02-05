@@ -2,13 +2,16 @@ package com.ws.masterserver.repository;
 
 import com.ws.masterserver.dto.customer.discount.DiscountRes;
 import com.ws.masterserver.entity.DiscountEntity;
+import com.ws.masterserver.entity.OrderEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
 import java.util.Date;
 import java.util.List;
 
@@ -83,4 +86,8 @@ public interface DiscountRepository extends JpaRepository<DiscountEntity, String
 
     @Query("select d from DiscountEntity d where d.customerType = ?1 and d.status = ?2")
     List<DiscountEntity> findByCustomerTypeAll(String customerType, String status);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Query("select o from DiscountEntity o where o.id = ?1")
+    DiscountEntity findByIdLock(String id);
 }

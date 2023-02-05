@@ -2,6 +2,7 @@ package com.ws.masterserver.controller.admin;
 
 import com.ws.masterserver.dto.admin.discount.create.DiscountDto;
 import com.ws.masterserver.dto.admin.discount.search.DiscountRequest;
+import com.ws.masterserver.dto.admin.order.change_status.ChangeStatusDto;
 import com.ws.masterserver.utils.base.WsController;
 import com.ws.masterserver.utils.base.rest.ResData;
 import com.ws.masterserver.utils.common.JsonUtils;
@@ -46,9 +47,8 @@ public class AdminDiscountController extends WsController {
     }
 
     @PostMapping("/change-status")
-    @Operation(summary = "API đổi trạng thái khuyến mãi")
-    public ResponseEntity<ResData<String>> changeStatus(String id){
-        log.info("start api delete with dto: {}", JsonUtils.toJson(id));
-        return ResponseEntity.status(HttpStatus.OK).body(service.adminDiscountDetailService.changeStatus(getCurrentUser(), id));
+    @Operation(summary = "API thay đổi trạng thái mã khuyến mãi")
+    public Object changeStatus4Admin(@RequestBody ChangeStatusDto payload) {
+        return service.adminDiscountService.changeStatus(getCurrentUser(), payload);
     }
 }

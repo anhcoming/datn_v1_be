@@ -1,6 +1,7 @@
 package com.ws.masterserver.service.impl;
 
 import com.ws.masterserver.dto.admin.discount.create.DiscountDto;
+import com.ws.masterserver.dto.admin.order.change_status.ChangeStatusDto;
 import com.ws.masterserver.dto.dob.DiscountNotificationDto;
 import com.ws.masterserver.entity.*;
 import com.ws.masterserver.job.DiscountNotificationJob;
@@ -9,7 +10,6 @@ import com.ws.masterserver.service.MailService;
 import com.ws.masterserver.utils.base.WsException;
 import com.ws.masterserver.utils.base.WsRepository;
 import com.ws.masterserver.utils.base.rest.CurrentUser;
-import com.ws.masterserver.utils.base.rest.ResData;
 import com.ws.masterserver.utils.common.*;
 import com.ws.masterserver.utils.constants.WsCode;
 import com.ws.masterserver.utils.constants.enums.*;
@@ -174,8 +174,8 @@ public class AdminDiscountServiceImpl implements AdminDiscountService {
             String discountId = discount.getId();
             for (String email : emails) {
                 DiscountNotificationJob.add(DiscountNotificationDto.builder()
-                                .discountId(discountId)
-                                .email(email)
+                        .discountId(discountId)
+                        .email(email)
                         .build());
             }
         }
@@ -272,17 +272,37 @@ public class AdminDiscountServiceImpl implements AdminDiscountService {
                 break;
         }
     }
+
     @Override
     @Transactional
-    public ResData<String> changeStatus(CurrentUser currentUser, String id) {
-        AuthValidator.checkAdmin(currentUser);
-        if (id == null) {
-            throw new WsException(WsCode.DISCOUNT_NOT_FOUND);
+    public Object changeStatus(CurrentUser currentUser, ChangeStatusDto dto) {
+        AuthValidator.checkAdminAndStaff(currentUser);
+        if (StringUtils.isNullOrEmpty(dto.getStatus())) {
+            throw new WsException(WsCode.ERROR_NOT_FOUND);
         }
-        DiscountEntity discount = repository.discountRepository.findById(id).orElse(null);
-        discount.setActive(!discount.getActive());
-        repository.discountRepository.save(discount);
-        log.info("delete finished at {} with response: {}", new Date(), JsonUtils.toJson(discount));
-        return new ResData<>(discount.getId(), WsCode.OK);
+        DiscountEntity disount = repository.discountRepository.findByIdLock(dto.getId());
+        DiscountStatusEnums status = DiscountStatusEnums.from(dto.getStatus().toUpperCase(Locale.ROOT));
+        DiscountStatusEnums nowStatus = DiscountStatusEnums.from(disount.getStatus());
+        if (status == null || disount == null) {
+            throw new WsException(WsCode.ERROR_NOT_FOUND);
+        }
+
+        String stt = dto.getStatus();
+        if (stt == "ACTIVE") {
+            if (DiscountStatusEnums.ACTIVE.equals(nowStatus)) {
+                throw new WsException(WsCode.DISCOUNT_PENDINGACTIVE);
+            }
+        } else if (stt == "DE_ACTIVE"){
+            if (DiscountStatusEnums.DE_ACTIVE.equals(nowStatus)) {
+                throw new WsException(WsCode.DISCOUNT_PENDINGDE_ACTIVE);
+            }
+        }
+
+        disount.setStatus(status.name());
+        disount.setUpdatedBy(currentUser.getId());
+        disount.setUpdatedDate(new Date());
+        repository.discountRepository.save(disount);
+
+        return disount.getStatus();
     }
 }
