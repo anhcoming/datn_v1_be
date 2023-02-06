@@ -42,6 +42,11 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, String> {
             ")",nativeQuery = true)
     boolean checkExistReview(String userId,String productId);
 
+    @Query(value = "SELECT * FROM review where order_id =?1 and product_id =?2 \n" +
+            "and review_id = 'ok'",nativeQuery = true)
+    List<ReviewEntity> checkExistReviewV2(String orderId,String productId);
+
+
     @Query("select r\n" +
             "from ReviewEntity r\n" +
             "where (r.rating = :rating)\n" +

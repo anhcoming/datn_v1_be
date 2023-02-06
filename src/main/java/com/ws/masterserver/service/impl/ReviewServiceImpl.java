@@ -1,12 +1,12 @@
 package com.ws.masterserver.service.impl;
 
+import com.ws.masterserver.dto.customer.blog.BlogResponse;
 import com.ws.masterserver.dto.customer.order.order_detail.OrderDetailResponse;
 import com.ws.masterserver.dto.customer.review.request.CheckReview;
 import com.ws.masterserver.dto.customer.review.request.ReviewFilter;
 import com.ws.masterserver.dto.customer.review.request.ReviewRequest;
 import com.ws.masterserver.dto.customer.review.request.ReviewUpdateReq;
 import com.ws.masterserver.dto.customer.review.response.ReviewResponse;
-import com.ws.masterserver.entity.OrderEntity;
 import com.ws.masterserver.entity.ReviewEntity;
 import com.ws.masterserver.service.ReviewService;
 import com.ws.masterserver.utils.base.WsException;
@@ -16,10 +16,8 @@ import com.ws.masterserver.utils.base.rest.PageData;
 import com.ws.masterserver.utils.base.rest.ResData;
 import com.ws.masterserver.utils.common.DateUtils;
 import com.ws.masterserver.utils.common.PageableUtils;
-import com.ws.masterserver.utils.common.StringUtils;
 import com.ws.masterserver.utils.common.UidUtils;
 import com.ws.masterserver.utils.constants.WsCode;
-import com.ws.masterserver.utils.constants.enums.StatusEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,7 +28,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,6 +95,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .createdDate(new Date())
                 .active(Boolean.TRUE)
                 .rating(request.getRating())
+                .reviewId("ok")
                 .productId(request.getProductId())
                 .content(request.getContent())
                 .userId(currentUser.getId())
@@ -159,5 +157,16 @@ public class ReviewServiceImpl implements ReviewService {
         boolean check = repository.reviewRepository.checkExistReview(currentUser.getId(),id);
         return new ResData<>(check,WsCode.OK);
     }
+
+//    @Override
+//    public ResData<List<BlogResponse>> getAllBlog() {
+//        List<BlogResponse> blog = repository.blogRepository.getAllBlog();
+//        return new ResData<>(blog, WsCode.OK);
+//    }
+    @Override
+    public ResData<List<?>> checkExistProductReviewV2(String orderId,String productId) {
+        List<?> review = repository.reviewRepository.checkExistReviewV2(orderId,productId);
+        return new ResData<>(review, WsCode.OK);
+        };
 
 }

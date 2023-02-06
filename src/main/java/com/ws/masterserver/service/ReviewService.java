@@ -19,4 +19,6 @@ public interface ReviewService {
     Object checkExistReviewProduct(CurrentUser currentUser, CheckReview req);
 
     Object checkExistProductReview(CurrentUser currentUser, String id );
+
+    Object checkExistProductReviewV2(String orderId,String productId);
 }
